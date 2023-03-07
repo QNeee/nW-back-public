@@ -120,7 +120,7 @@ const patchAvatar = async (owner, id) => {
     const userFriends = await Friends.find({ nickName: user.nickName });
     if (userFriends.length > 0) {
         for (let i = 0; i <= userFriends.length; i++) {
-            await Friends.findOneAndUpdate({ nickName: user.nickName }, { avatarURL: process.env.HOST + id })
+            await Friends.findOneAndUpdate({ nickName: user.nickName, avatarURL: user.avatarURL }, { avatarURL: process.env.HOST + id })
         }
     }
     const patchedUserAvatar = await User.findOneAndUpdate({ _id: owner }, { avatarURL: process.env.HOST + id }).select({ password: 0, token: 0 })
