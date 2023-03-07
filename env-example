@@ -1,0 +1,5 @@
+PORT = your PORT 
+HOST = your HOST
+JWT_SECRET = your JWT_SECRET
+Mongo_URL = your Mongo_URL
+SENDGRID_API_KEY = your SENDGRID_API_KEY
