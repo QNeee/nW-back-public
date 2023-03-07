@@ -1,5 +1,6 @@
-PORT = your PORT 
-HOST = your HOST
+PORT = your PORT
+HOSTAVATARS= http://localhost:10000/avatars/ or your HOSTAVATARS
+HOST = http://localhost:10000/ or your HOST
 JWT_SECRET = your JWT_SECRET
 Mongo_URL = your Mongo_URL
 SENDGRID_API_KEY = your SENDGRID_API_KEY
