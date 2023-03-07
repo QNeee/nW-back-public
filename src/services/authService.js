@@ -32,7 +32,7 @@ const register = async (email, password, nickName) => {
             text: `Confirm your registration to use this link = ${linkVerify}`,
             html: `U need <a href=${linkVerify}>Confirm</a> registration`,
         }
-        // await sgMail.send(msg);
+        await sgMail.send(msg);
         return user;
     }
 }
