@@ -37,11 +37,12 @@ const logOutController = async (req, res) => {
     await logOut(owner);
     return res.status(204).json({});
 }
+
 module.exports = {
     registerController,
     registerConfirmController,
     resendConfirmController,
     loginController,
     currentController,
-    logOutController
+    logOutController,
 }

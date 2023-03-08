@@ -10,7 +10,7 @@ const { v4: uuidv4 } = require('uuid');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const register = async (email, password, nickName) => {
     const user = new User({
-        email, password, avatarURL: null, nickName, verificationToken: sha256(uuidv4())
+        email, password, avatarURL: null, nickName, verificationToken: sha256(uuidv4()), status: 'offline'
     })
     const checkUser = await User.findOne({ email });
     const checkNickName = await User.findOne({ nickName });
@@ -23,7 +23,7 @@ const register = async (email, password, nickName) => {
     const newUser = await user.save();
     if (newUser) {
         const user = await User.findOne({ email }).select({ email: 1, verificationToken: 1 });
-        const hostVerify = 'http://localhost:10000/api/auth/users/verify/';
+        const hostVerify = `${process.env.HOST}api/auth/users/verify/`;
         const linkVerify = hostVerify + user.verificationToken;
         const msg = {
             to: email, // Change to your recipient
@@ -32,7 +32,7 @@ const register = async (email, password, nickName) => {
             text: `Confirm your registration to use this link = ${linkVerify}`,
             html: `U need <a href=${linkVerify}>Confirm</a> registration`,
         }
-        await sgMail.send(msg);
+        // await sgMail.send(msg);
         return user;
     }
 }
@@ -79,7 +79,7 @@ const logOut = async (owner) => {
     if (!user) {
         throw new NotAuthorized("Not authorized");
     }
-    await User.findByIdAndUpdate(owner, { token: "" });
+    await User.findByIdAndUpdate(owner, { token: "", status: 'offline' });
 }
 const current = async (owner) => {
     const user = await User.findById(owner);

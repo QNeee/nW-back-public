@@ -22,6 +22,7 @@ const userScheme = new mongoose.Schema({
     verificationToken: {
         type: String,
     },
+    status: String,
     friends: {
         type: Number,
         default: 0

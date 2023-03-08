@@ -1,5 +1,5 @@
 const { getAllUsers,
-    getUserById, getUserByNickname, findUserById } = require('../services/userService')
+    getUserById, getUserByNickname, changeOnlineStatus, findUserById } = require('../services/userService')
 
 
 const getAllusersController = async (req, res) => {
@@ -33,10 +33,16 @@ const findUserByIdController = async (req, res) => {
     const user = await findUserById(id);
     return res.status(200).json(user);
 }
+const changeOnlineStatusController = async (req, res) => {
+    const { _id: owner } = req.user;
+    const status = await changeOnlineStatus(owner, req.body);
+    return res.status(201).json(status);
+}
 module.exports = {
     getAllusersController,
     getUserByIdController,
     getUserByNickNameController,
     findUserByIdController,
+    changeOnlineStatusController
 
 }

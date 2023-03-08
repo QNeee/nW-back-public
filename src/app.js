@@ -8,6 +8,7 @@ const userRoutes = require('./routes/userRoutes')
 const profileRoutes = require('./routes/profileRoutes')
 const photosRoutes = require('./routes/photosRoutes')
 const { errorHandler } = require('./helpers/apiHelper');
+const path = require('path');
 const app = express();
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 app.use(logger(formatsLogger))
@@ -19,9 +20,7 @@ app.use('/api/messages', messagesRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/profiles', profileRoutes)
 app.use('/api/photos', photosRoutes)
-app.use(express.static('./public'));
+app.use(express.static('/opt/render/project/public/'));
 app.use(errorHandler);
-
-//
 
 module.exports = app;

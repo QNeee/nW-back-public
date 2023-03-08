@@ -16,16 +16,17 @@ const { postPhotoController,
     postUnLikeController } = require('../controllers/photosController');
 const { User } = require('../db/userModel');
 const { Photos } = require('../db/photosModel');
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, path.resolve('./public/avatars'));
+        cb(null, path.resolve('/opt/render/project/public/avatars/'));
     },
     filename: async (req, file, cb) => {
         const { _id: owner } = req.user;
         const user = await User.findById(owner);
         const [, extension] = file.originalname.split('.');
         const URL = `${user.email}+${uuidv4()}.${extension}`;
-        const photoURL = `${process.env.HOST}${URL}`;
+        const photoURL = `${process.env.HOSTAVATARS}${URL}`;
         const photo = {
             nickName: user.nickName,
             photoURL,

@@ -2,6 +2,8 @@ const { Friends } = require("../db/friendsModel");
 const { Photos } = require("../db/photosModel");
 const { User } = require("../db/userModel");
 const { NotAuthorized, WrongParametersError, NotFound } = require("../helpers/errors");
+const path = require('path');
+const fs = require('fs');
 const postPhoto = async (owner, file) => {
     const user = await User.findById(owner);
     if (!user) {
@@ -120,10 +122,10 @@ const patchAvatar = async (owner, id) => {
     const userFriends = await Friends.find({ nickName: user.nickName });
     if (userFriends.length > 0) {
         for (let i = 0; i <= userFriends.length; i++) {
-            await Friends.findOneAndUpdate({ nickName: user.nickName, avatarURL: user.avatarURL }, { avatarURL: process.env.HOST + id })
+            await Friends.findOneAndUpdate({ nickName: user.nickName, avatarURL: user.avatarURL }, { avatarURL: process.env.HOSTAVATARS + id })
         }
     }
-    const patchedUserAvatar = await User.findOneAndUpdate({ _id: owner }, { avatarURL: process.env.HOST + id }).select({ password: 0, token: 0 })
+    const patchedUserAvatar = await User.findOneAndUpdate({ _id: owner }, { avatarURL: process.env.HOSTAVATARS + id }).select({ password: 0, token: 0 })
     return patchedUserAvatar;
 }
 const deletePhoto = async (owner, id) => {
@@ -142,7 +144,13 @@ const deletePhoto = async (owner, id) => {
         }
     }
     const photo = await Photos.findOneAndRemove({ name: id })
-    return photo;
+    if (photo) {
+        const Filepath = `/opt/render/project/public/avatars/${id}`;
+        fs.unlink(Filepath, err => {
+            if (err) throw err; // не удалось удалить файл
+        });
+        return photo;
+    }
 }
 module.exports = {
     postPhoto,
